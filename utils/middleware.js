@@ -1,4 +1,5 @@
 const { PDFNet } = require("@pdftron/pdfnet-node");
+const { execFile } = require("child_process");
 const converter = require("node-ebook-converter");
 const { parse } = require("node-html-parser");
 const epub = require("epub-parser");
@@ -74,20 +75,22 @@ module.exports.convertToEpub = async function convert(req, res, next) {
   let epubName = path.basename(req.pdfPath, ".pdf") + ".epub";
   req.epubPath = path.join(rootURL, "downloads/", epubName);
 
-  await converter
-    .convert({
-      input: req.pdfPath,
-      output: req.epubPath,
-      authors: "Rifujin na Magonote"
-    })
-    .then(response => console.log(response))
-    .catch(err => {
-      console.log(`Converting Error: ${err}`);
-      return res.status(500).send("Error Converting to EPUB");
-    });
+  const input = req.pdfPath;
+  const output = req.epubPath;
 
-  console.log("converted to epub at:", req.epubPath);
-  next();
+  execFile(
+    "ebook-convert",
+    [input, output, "--authors", "Rifujin na Magonote"],
+    { maxBuffer: 1024 * 1024 * 10 }, // 10MB buffer
+    (error, stdout, stderr) => {
+      if (error) {
+        console.error("EPUB conversion error:", error);
+        return res.status(500).send("Error Converting to EPUB");
+      }
+      console.log(stdout || "Conversion successful.");
+      next();
+    }
+  );
 };
 
 // module.exports.scrapeCoverImage = async function scrape(req, res, next) {
