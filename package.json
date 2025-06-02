@@ -1,0 +1,28 @@
+{
+  "name": "mushoku_tensei_pdf_formatter",
+  "version": "1.0.0",
+  "description": "Removes Footer From Mushoku Tensei Light Novel PDF",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start:dev": "nodemon ./index.js",
+    "start": "node ./index.js"
+  },
+  "author": "Gabriel Serna",
+  "license": "ISC",
+  "dependencies": {
+    "@pdftron/pdfnet-node": "^10.10.0",
+    "axios": "^1.7.2",
+    "epub-parser": "^0.2.5",
+    "express": "^4.19.2",
+    "express-fileupload": "^1.5.0",
+    "fs": "^0.0.1-security",
+    "jszip": "^3.10.1",
+    "node-ebook-converter": "^1.0.11",
+    "node-html-parser": "^6.1.13",
+    "sharp": "^0.33.4"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.3"
+  }
+}

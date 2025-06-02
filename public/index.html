@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Urbanist:wght@100..900&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="icon" type="image/png" href="./favicon.png" />
+    <title>Mushoku Tensei Footer Remover</title>
+    <style>
+      :root {
+        --primary: #f5f2d7;
+        --secondary: hsl(29, 15%, 44%);
+        margin: 0;
+        padding: 0;
+      }
+      body {
+        padding: 0;
+        margin: 0;
+      }
+      .page {
+        perspective: 10px;
+        width: 100vw;
+        height: 100vh;
+        perspective-origin: center center;
+        overflow: hidden;
+        -ms-overflow-style: none; /* IE and Edge */
+        scrollbar-width: none; /* Firefox */
+
+        &::-webkit-scrollbar {
+          display: none; /* Chrome, Safari and Opera */
+        }
+      }
+      input {
+        display: block;
+      }
+
+      button {
+        margin-top: 8rem;
+      }
+      #parallax {
+        height: 120vh;
+        transform-style: preserve-3d;
+      }
+
+      img {
+        background-position: bottom center;
+        background-size: cover;
+        background-repeat: repeat-x;
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+      }
+
+      #overflow {
+        position: absolute;
+        width: 100vw;
+        height: 100vh;
+        top: 80vh;
+        padding-top: 10rem;
+        background: linear-gradient(
+          rgba(92, 58, 7, 0) 0%,
+          rgba(92, 58, 7, 0.8) 6%,
+          rgba(92, 58, 7, 1) 12%,
+          rgba(65, 41, 6, 1) 50%,
+          rgb(46, 29, 4, 1) 100%
+        );
+        transform: translateZ(2px) scale(0.8);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+      }
+
+      form {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+      }
+
+      h1 {
+        margin-top: -10rem;
+        color: var(--primary);
+        user-select: none;
+      }
+
+      .btn-arrow-slide-cont {
+        position: relative;
+        display: inline-block;
+        cursor: pointer;
+        outline: none;
+        border: 0;
+        vertical-align: middle;
+        text-decoration: none;
+        background: transparent;
+        padding: 0;
+        font-size: inherit;
+        font-family: inherit;
+        width: 180px;
+        height: auto;
+      }
+      .btn-arrow-slide-cont:hover {
+        background: transparent;
+      }
+      .btn-arrow-slide-circle {
+        transition: all 0.45s cubic-bezier(0.65, 0, 0.076, 1);
+        position: relative;
+        display: block;
+        margin: 0;
+        width: 3rem;
+        height: 3rem;
+        border-radius: 1.625rem;
+        box-shadow: 0 4px 7px rgba(0, 0, 0, 0.4);
+      }
+      .btn-arrow-slide-circle::before {
+        content: "";
+        transition: all 0.45s cubic-bezier(0.65, 0, 0.076, 1);
+        position: relative;
+        display: block;
+        margin: 0;
+        width: 100%;
+        height: 100%;
+        border-radius: 1.625rem;
+        background: linear-gradient(90deg, hsl(265, 32%, 30%), hsl(260, 25%, 45%));
+        opacity: 0;
+      }
+      .btn-arrow-slide-circle .btn-arrow-slide-icon {
+        transition: all 0.45s cubic-bezier(0.65, 0, 0.076, 1);
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        margin: auto;
+        background: var(--primary);
+      }
+      .btn-arrow-slide-circle .btn-arrow-slide-icon.btn-arrow-slide-arrow {
+        transition: all 0.45s cubic-bezier(0.65, 0, 0.076, 1);
+        left: 0.625rem;
+        width: 1.125rem;
+        height: 0.125rem;
+        background: none;
+      }
+      .btn-arrow-slide-arrow::before {
+        position: absolute;
+        content: "";
+        top: -0.3rem;
+        right: 0.0625rem;
+        width: 0.625rem;
+        height: 0.625rem;
+        border-top: 0.125rem solid var(--primary);
+        border-right: 0.125rem solid var(--primary);
+        transform: rotate(45deg);
+      }
+      .btn-arrow-slide-text {
+        transition: all 0.45s cubic-bezier(0.65, 0, 0.076, 1);
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        padding: 0.75rem 0;
+        margin: 0 0 0 1.85rem;
+        font-weight: 600;
+        line-height: 1.2;
+        font-size: 20px;
+        text-align: center;
+        text-transform: uppercase;
+        font-family: Urbanist, sans-serif;
+        user-select: none;
+      }
+      .btn-arrow-slide-cont:hover .btn-arrow-slide-circle,
+      .btn-arrow-slide-cont:hover .btn-arrow-slide-circle::before {
+        width: 100%;
+        opacity: 1;
+      }
+      .btn-arrow-slide-cont:hover
+        .btn-arrow-slide-circle
+        .btn-arrow-slide-icon.btn-arrow-slide-arrow {
+        background: var(--primary);
+      }
+      .btn-arrow-slide-cont:hover .btn-arrow-slide-text {
+        color: var(--primary);
+        font-weight: 500;
+      }
+      .btn-arrow-slide-cont--blue .btn-arrow-slide-circle {
+        background: hsl(265, 32%, 30%);
+      }
+      .btn-arrow-slide-cont--blue .btn-arrow-slide-text {
+        color: hsl(260, 25%, 55%);
+      }
+
+      .file {
+        opacity: 0;
+        width: 290px;
+        height: 50px;
+        z-index: 2;
+        position: absolute;
+        cursor: pointer;
+      }
+
+      .file-input {
+        margin-bottom: 20px;
+        width: 290px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .file-input label {
+        display: block;
+        position: relative;
+        width: 290px;
+        height: 50px;
+        border-radius: 25px;
+        background: linear-gradient(30deg, hsl(260, 25%, 35%), hsl(185, 21%, 52%));
+        box-shadow: 0 4px 7px rgba(0, 0, 0, 0.4);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--primary);
+        font-family: Urbanist, sans-serif;
+        font-weight: bold;
+        z-index: 1;
+        user-select: none;
+      }
+
+      .file-input label::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        border-radius: 25px;
+        background: linear-gradient(
+          30deg,
+          hsl(265, 32%, 30%) 5%,
+          hsl(185, 29%, 47%) 100%
+        );
+        opacity: 0;
+        transition: opacity 500ms;
+        z-index: -1;
+      }
+
+      .file-name {
+        position: absolute;
+        text-align: center;
+        bottom: -54.4px;
+        left: 0;
+        right: 0;
+        font-size: 0.85rem;
+        color: var(--secondary);
+        width: 100%;
+      }
+
+      input:hover + label::before,
+      input:focus + label::before {
+        opacity: 1;
+      }
+
+      .hidden {
+        visibility: hidden;
+      }
+      .reveal {
+        animation: reveal 750ms forwards;
+      }
+
+      @keyframes reveal {
+        0% {
+          opacity: 0;
+          transform: translateY(-15px);
+        }
+        100% {
+          opacity: 1;
+          transform: translateY(0px);
+        }
+      }
+
+      .hidden-logo {
+        opacity: 0;
+        transform: translateY(30px) translateZ(-5px) scale(0.5);
+      }
+
+      .reveal-logo {
+        animation: reveal-logo 750ms cubic-bezier(0.5, 0, 0.5, 1) forwards;
+      }
+
+      @keyframes reveal-logo {
+        0% {
+          opacity: 0;
+          transform: translateY(50px) translateZ(-5px) scale(0.5);
+        }
+        100% {
+          opacity: 1;
+          transform: translateY(0px) translateZ(-5px) scale(0.5);
+        }
+      }
+
+      #logo {
+        /* transform: translateZ(-5px) scale(0.5) !important; */
+        top: -100px;
+        left: -50px;
+      }
+      .texture {
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        z-index: -1;
+        background: url(texture.png) repeat;
+        mask-image: linear-gradient(
+          to top,
+          rgba(0, 0, 0, 0.3) 80%,
+          rgba(0, 0, 0, 0) 100%
+        );
+      }
+    </style>
+  </head>
+  <body onload="loadAnimation()">
+    <div id="page" class="page">
+      <div id="parallax">
+        <img
+          src="sky.png"
+          style="transform: translateZ(-10px) scale(2.1)"
+          draggable="false"
+        />
+        <img
+          src="far.png"
+          style="transform: translateZ(-6px) scale(1.65)"
+          draggable="false"
+        />
+        <img
+          id="logo"
+          src="https://upload.wikimedia.org/wikipedia/commons/f/f4/Mushoku_Tensei_international_logo_%28with_colour_gradient%29.svg"
+          class="hidden-logo"
+          draggable="false"
+        />
+        <img
+          src="middle.png"
+          style="transform: translateZ(-2px) scale(1.2); top: 20px"
+          draggable="false"
+        />
+        <img
+          src="near.png"
+          style="transform: translateZ(2px) scale(0.81); top: 100px"
+          draggable="false"
+        />
+        <img src="recolor.png" draggable="false" />
+
+        <section id="overflow">
+          <h1 style="font-family: Urbanist, sans-serif; font-size: 48px">
+            Upload PDF to be Formatted
+          </h1>
+          <form
+            action="/pdf-to-epub"
+            method="post"
+            enctype="multipart/form-data"
+            name="form"
+          >
+            <div class="file-input">
+              <input
+                id="input"
+                type="file"
+                name="inputFile"
+                accept=".pdf"
+                class="file"
+                onchange="reveal()"
+              />
+              <label for="inputFile">
+                Select file
+                <p class="file-name"></p>
+              </label>
+            </div>
+            <div id="btn-submit" class="btn btn-arrow-slide hidden">
+              <button
+                class="btn-arrow-slide-cont btn-arrow-slide-cont--blue"
+                type="submit"
+                name="submitFile"
+              >
+                <span class="btn-arrow-slide-circle" aria-hidden="true">
+                  <span class="btn-arrow-slide-arrow btn-arrow-slide-icon"></span>
+                </span>
+                <span class="btn-arrow-slide-text"> Submit </span>
+              </button>
+            </div>
+          </form>
+          <div class="texture" />
+        </section>
+      </div>
+    </div>
+  </body>
+  <script>
+    const page = document.getElementById("page");
+    const targetScrollTop = page.scrollHeight - page.clientHeight;
+
+    function loadAnimation() {
+      setTimeout(() => {
+        const logo = document.getElementById("logo");
+        logo.classList.remove("hidden-logo");
+        logo.classList.add("reveal-logo");
+      }, 500);
+
+      setTimeout(() => {
+        scrollToBottom(3000);
+      }, 1700);
+    }
+
+    function scrollToBottom(duration) {
+      // cancel if already at bottom
+      if (page.scrollTop === targetScrollTop) return;
+
+      const startScrollTop = page.scrollTop;
+      const distance = targetScrollTop - startScrollTop;
+      let scrollCount = 0,
+        oldTimestamp = null;
+
+      function step(newTimestamp) {
+        if (oldTimestamp !== null) {
+          scrollCount += (Math.PI * (newTimestamp - oldTimestamp)) / duration;
+          if (scrollCount >= Math.PI) return (page.scrollTop = targetScrollTop);
+          page.scrollTop =
+            startScrollTop + (distance * (1 - Math.cos(scrollCount))) / 2;
+        }
+        oldTimestamp = newTimestamp;
+        window.requestAnimationFrame(step);
+      }
+      window.requestAnimationFrame(step);
+    }
+    //https://stackoverflow.com/questions/64180685/how-to-slow-down-scroll-to-top-speed
+    //https://stackoverflow.com/a/24559613
+
+    function reveal() {
+      const input = document.getElementById("input");
+      const button = document.getElementById("btn-submit");
+      if (input.files) {
+        const [file] = input.files;
+        let { name: fileName, size } = file;
+        if (fileName.length > 50) fileName = fileName.substring(0, 50) + "...";
+        const fileSize = (size / 1000 / 1000).toFixed(2);
+        const fileNameAndSize = `${fileName} - ${fileSize}MB`;
+
+        document.querySelector(".file-name").textContent = fileNameAndSize;
+
+        button.classList.remove("hidden");
+        button.classList.add("reveal");
+      }
+    }
+  </script>
+</html>
