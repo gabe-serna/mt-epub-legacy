@@ -22,8 +22,8 @@ app.post(
   "/pdf-to-epub",
   formatPDF,
   convertToEpub,
-  scrapeCoverImage,
-  addCoverImage,
+  // scrapeCoverImage,
+  // addCoverImage,
   async (req, res) => {
     try {
       deleteTempFiles();
